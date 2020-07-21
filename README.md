@@ -54,7 +54,7 @@ Connect to your PC to Livox LiDAR (Horizon) by following  [Livox-ros-driver inst
 ```
     ....
     roslaunch livox_mapping mapping_horizon.launch
-    roslaunch livox_ros_driver livox_lidar.launch
+    roslaunch livox_ros_driver livox_lidar_msg.launch
     
 ```
 ## 4. Rosbag Example
