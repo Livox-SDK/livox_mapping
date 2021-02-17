@@ -415,7 +415,7 @@ void laserCloudHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg)
         double min_dis = 10000;
         double max_dis = 0;
         for(int j = 0; j < 4; j++){ //TODO: change the plane window size and add thin rod support
-          right_list.push_back(laserCloud->points[i-j]);
+          right_list.push_back(laserCloud->points[i+j]);
           Eigen::Vector3d temp_vector = Eigen::Vector3d(laserCloud->points[i+j].x-laserCloud->points[i+j+1].x,
                                                   laserCloud->points[i+j].y-laserCloud->points[i+j+1].y,
                                                   laserCloud->points[i+j].z-laserCloud->points[i+j+1].z);
