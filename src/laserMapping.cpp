@@ -53,9 +53,9 @@ typedef pcl::PointXYZI PointType;
 
 int kfNum = 0;
 
-float timeLaserCloudCornerLast = 0;
-float timeLaserCloudSurfLast = 0;
-float timeLaserCloudFullRes = 0;
+double timeLaserCloudCornerLast = 0;
+double timeLaserCloudSurfLast = 0;
+double timeLaserCloudFullRes = 0;
 
 bool newLaserCloudCornerLast = false;
 bool newLaserCloudSurfLast = false;
