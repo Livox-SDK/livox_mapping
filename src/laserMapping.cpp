@@ -402,8 +402,8 @@ int main(int argc, char** argv)
 
     ros::Publisher pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 1);
     nav_msgs::Odometry odomAftMapped;
-    odomAftMapped.header.frame_id = "/camera_init";
-    odomAftMapped.child_frame_id = "/aft_mapped";
+    odomAftMapped.header.frame_id = "camera_init";
+    odomAftMapped.child_frame_id = "aft_mapped";
 
     std::string map_file_path;
     ros::param::get("~map_file_path",map_file_path);
@@ -1117,13 +1117,13 @@ int main(int argc, char** argv)
             sensor_msgs::PointCloud2 laserCloudSurround3;
             pcl::toROSMsg(*laserCloudSurround2, laserCloudSurround3);
             laserCloudSurround3.header.stamp = ros::Time().fromSec(timeLaserCloudCornerLast);
-            laserCloudSurround3.header.frame_id = "/camera_init";
+            laserCloudSurround3.header.frame_id = "camera_init";
             pubLaserCloudSurround.publish(laserCloudSurround3);
 
             sensor_msgs::PointCloud2 laserCloudSurround3_corner;
             pcl::toROSMsg(*laserCloudSurround2_corner, laserCloudSurround3_corner);
             laserCloudSurround3_corner.header.stamp = ros::Time().fromSec(timeLaserCloudCornerLast);
-            laserCloudSurround3_corner.header.frame_id = "/camera_init";
+            laserCloudSurround3_corner.header.frame_id = "camera_init";
             pubLaserCloudSurround_corner.publish(laserCloudSurround3_corner);
             
 
@@ -1141,7 +1141,7 @@ int main(int argc, char** argv)
             sensor_msgs::PointCloud2 laserCloudFullRes3;
             pcl::toROSMsg(*laserCloudFullResColor, laserCloudFullRes3);
             laserCloudFullRes3.header.stamp = ros::Time().fromSec(timeLaserCloudCornerLast);
-            laserCloudFullRes3.header.frame_id = "/camera_init";
+            laserCloudFullRes3.header.frame_id = "camera_init";
             pubLaserCloudFullRes.publish(laserCloudFullRes3);
 
             *laserCloudFullResColor_pcd += *laserCloudFullResColor;
@@ -1171,7 +1171,7 @@ int main(int argc, char** argv)
             q.setY( odomAftMapped.pose.pose.orientation.y );
             q.setZ( odomAftMapped.pose.pose.orientation.z );
             transform.setRotation( q );
-            br.sendTransform( tf::StampedTransform( transform, odomAftMapped.header.stamp, "/camera_init", "/aft_mapped" ) );
+            br.sendTransform( tf::StampedTransform( transform, odomAftMapped.header.stamp, "camera_init", "aft_mapped" ) );
 
             kfNum++;
 
