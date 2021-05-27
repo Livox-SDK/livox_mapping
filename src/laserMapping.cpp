@@ -99,8 +99,8 @@ std::vector< Eigen::Matrix4f > pose_map;
 //all points
 pcl::PointCloud<PointType>::Ptr laserCloudFullRes(new pcl::PointCloud<PointType>());
 pcl::PointCloud<PointType>::Ptr laserCloudFullRes2(new pcl::PointCloud<PointType>());
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr laserCloudFullResColor(new pcl::PointCloud<pcl::PointXYZRGB>());
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr laserCloudFullResColor_pcd(new pcl::PointCloud<pcl::PointXYZRGB>());
+// pcl::PointCloud<pcl::PointXYZRGB>::Ptr laserCloudFullResColor(new pcl::PointCloud<pcl::PointXYZRGB>());
+// pcl::PointCloud<pcl::PointXYZRGB>::Ptr laserCloudFullResColor_pcd(new pcl::PointCloud<pcl::PointXYZRGB>());
 
 
 pcl::PointCloud<PointType>::Ptr laserCloudCornerArray[laserCloudNum];
@@ -372,7 +372,7 @@ void laserCloudFullResHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloud
     timeLaserCloudFullRes = laserCloudFullRes2->header.stamp.toSec();
 
     laserCloudFullRes->clear();
-    laserCloudFullResColor->clear();
+    // laserCloudFullResColor->clear();
     pcl::fromROSMsg(*laserCloudFullRes2, *laserCloudFullRes);
 
     newLaserCloudFullRes = true;
@@ -397,8 +397,8 @@ int main(int argc, char** argv)
     ros::Publisher pubLaserCloudSurround_corner = nh.advertise<sensor_msgs::PointCloud2>
             ("/laser_cloud_surround_corner", 100);
 
-    ros::Publisher pubLaserCloudFullRes = nh.advertise<sensor_msgs::PointCloud2>
-            ("/velodyne_cloud_registered", 100);
+    // ros::Publisher pubLaserCloudFullRes = nh.advertise<sensor_msgs::PointCloud2>
+    //         ("/velodyne_cloud_registered", 100);
 
     ros::Publisher pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 1);
     nav_msgs::Odometry odomAftMapped;
@@ -1130,21 +1130,21 @@ int main(int argc, char** argv)
             laserCloudFullRes2->clear();
             *laserCloudFullRes2 = *laserCloudFullRes;
 
-            int laserCloudFullResNum = laserCloudFullRes2->points.size();
-            for (int i = 0; i < laserCloudFullResNum; i++) {
+            // int laserCloudFullResNum = laserCloudFullRes2->points.size();
+            // for (int i = 0; i < laserCloudFullResNum; i++) {
 
-                pcl::PointXYZRGB temp_point;
-                RGBpointAssociateToMap(&laserCloudFullRes2->points[i], &temp_point);
-                laserCloudFullResColor->push_back(temp_point);
-            }
+            //     pcl::PointXYZRGB temp_point;
+            //     RGBpointAssociateToMap(&laserCloudFullRes2->points[i], &temp_point);
+            //     laserCloudFullResColor->push_back(temp_point);
+            // }
 
-            sensor_msgs::PointCloud2 laserCloudFullRes3;
-            pcl::toROSMsg(*laserCloudFullResColor, laserCloudFullRes3);
-            laserCloudFullRes3.header.stamp = ros::Time().fromSec(timeLaserCloudCornerLast);
-            laserCloudFullRes3.header.frame_id = "camera_init";
-            pubLaserCloudFullRes.publish(laserCloudFullRes3);
+            // sensor_msgs::PointCloud2 laserCloudFullRes3;
+            // pcl::toROSMsg(*laserCloudFullResColor, laserCloudFullRes3);
+            // laserCloudFullRes3.header.stamp = ros::Time().fromSec(timeLaserCloudCornerLast);
+            // laserCloudFullRes3.header.frame_id = "camera_init";
+            // pubLaserCloudFullRes.publish(laserCloudFullRes3);
 
-            *laserCloudFullResColor_pcd += *laserCloudFullResColor;
+            // *laserCloudFullResColor_pcd += *laserCloudFullResColor;
 
             geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
                     (transformAftMapped[2], - transformAftMapped[0], - transformAftMapped[1]);
@@ -1200,27 +1200,27 @@ int main(int argc, char** argv)
         rate.sleep();
     }
     //--------------------------save map---------------
-    std::string surf_filename(map_file_path + "/surf.pcd");
-    std::string corner_filename(map_file_path + "/corner.pcd");
-    std::string all_points_filename(map_file_path + "/all_points.pcd");
-    std::ofstream keyframe_file(map_file_path + "/key_frame.txt");
-    for(auto kf : keyframe_pose){
-        keyframe_file << kf[0] << " "<< kf[1] << " "<< kf[2] << " "<< kf[3] << " "
-                          << kf[4] << " "<< kf[5] << " "<< kf[6] << " "<< std::endl;
-    }
-    keyframe_file.close();
-    pcl::PointCloud<pcl::PointXYZI> surf_points, corner_points;
-    surf_points = *laserCloudSurfFromMap;
-    corner_points = *laserCloudCornerFromMap;
-      if (surf_points.size() > 0 && corner_points.size() > 0) {
-    pcl::PCDWriter pcd_writer;
-    std::cout << "saving...";
-    pcd_writer.writeBinary(surf_filename, surf_points);
-    pcd_writer.writeBinary(corner_filename, corner_points);
-    pcd_writer.writeBinary(all_points_filename, *laserCloudFullResColor_pcd);
-  } else {
-    std::cout << "no points saved";
-  }
+//     std::string surf_filename(map_file_path + "/surf.pcd");
+//     std::string corner_filename(map_file_path + "/corner.pcd");
+//     std::string all_points_filename(map_file_path + "/all_points.pcd");
+//     std::ofstream keyframe_file(map_file_path + "/key_frame.txt");
+//     for(auto kf : keyframe_pose){
+//         keyframe_file << kf[0] << " "<< kf[1] << " "<< kf[2] << " "<< kf[3] << " "
+//                           << kf[4] << " "<< kf[5] << " "<< kf[6] << " "<< std::endl;
+//     }
+//     keyframe_file.close();
+//     pcl::PointCloud<pcl::PointXYZI> surf_points, corner_points;
+//     surf_points = *laserCloudSurfFromMap;
+//     corner_points = *laserCloudCornerFromMap;
+//       if (surf_points.size() > 0 && corner_points.size() > 0) {
+//     pcl::PCDWriter pcd_writer;
+//     std::cout << "saving...";
+//     pcd_writer.writeBinary(surf_filename, surf_points);
+//     pcd_writer.writeBinary(corner_filename, corner_points);
+//     pcd_writer.writeBinary(all_points_filename, *laserCloudFullResColor_pcd);
+//   } else {
+//     std::cout << "no points saved";
+//   }
     //--------------------------
     //  loss_output.close();
 
