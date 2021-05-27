@@ -1157,21 +1157,28 @@ int main(int argc, char** argv)
             odomAftMapped.pose.pose.position.x = transformAftMapped[3];
             odomAftMapped.pose.pose.position.y = transformAftMapped[4];
             odomAftMapped.pose.pose.position.z = transformAftMapped[5];
+            odomAftMapped.pose.covariance = {
+            0.1,    0.0,    0.0,    0.0,    0.0,    0.0,
+            0.0,    0.1,    0.0,    0.0,    0.0,    0.0,
+            0.0,    0.0,    0.1,    0.0,    0.0,    0.0,
+            0.0,    0.0,    0.0,    0.1,    0.0,    0.0,
+            0.0,    0.0,    0.0,    0.0,    0.1,    0.0,
+            0.0,    0.0,    0.0,    0.0,    0.0,    0.1};
 
             pubOdomAftMapped.publish(odomAftMapped);
 
-            static tf::TransformBroadcaster br;
-            tf::Transform                   transform;
-            tf::Quaternion                  q;
-            transform.setOrigin( tf::Vector3( odomAftMapped.pose.pose.position.x,
-                                                odomAftMapped.pose.pose.position.y,
-                                                odomAftMapped.pose.pose.position.z ) );
-            q.setW( odomAftMapped.pose.pose.orientation.w );
-            q.setX( odomAftMapped.pose.pose.orientation.x );
-            q.setY( odomAftMapped.pose.pose.orientation.y );
-            q.setZ( odomAftMapped.pose.pose.orientation.z );
-            transform.setRotation( q );
-            br.sendTransform( tf::StampedTransform( transform, odomAftMapped.header.stamp, "camera_init", "aft_mapped" ) );
+            // static tf::TransformBroadcaster br;
+            // tf::Transform                   transform;
+            // tf::Quaternion                  q;
+            // transform.setOrigin( tf::Vector3( odomAftMapped.pose.pose.position.x,
+            //                                     odomAftMapped.pose.pose.position.y,
+            //                                     odomAftMapped.pose.pose.position.z ) );
+            // q.setW( odomAftMapped.pose.pose.orientation.w );
+            // q.setX( odomAftMapped.pose.pose.orientation.x );
+            // q.setY( odomAftMapped.pose.pose.orientation.y );
+            // q.setZ( odomAftMapped.pose.pose.orientation.z );
+            // transform.setRotation( q );
+            // br.sendTransform( tf::StampedTransform( transform, odomAftMapped.header.stamp, "camera_init", "aft_mapped" ) );
 
             kfNum++;
 

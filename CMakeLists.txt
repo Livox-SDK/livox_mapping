@@ -41,6 +41,7 @@ catkin_package(
 )
 
 add_executable(livox_repub src/livox_repub.cpp)
+add_dependencies(livox_repub ${catkin_EXPORTED_TARGETS})
 target_link_libraries(livox_repub ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS})
 
 add_executable(loam_scanRegistration src/scanRegistration.cpp)
