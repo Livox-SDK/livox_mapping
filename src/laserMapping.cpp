@@ -36,7 +36,7 @@
 #include <math.h>
 
 #include <nav_msgs/Odometry.h>
-#include <opencv/cv.h>
+#include <opencv2/core.hpp>
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
@@ -53,9 +53,9 @@ typedef pcl::PointXYZI PointType;
 
 int kfNum = 0;
 
-float timeLaserCloudCornerLast = 0;
-float timeLaserCloudSurfLast = 0;
-float timeLaserCloudFullRes = 0;
+double timeLaserCloudCornerLast = 0;
+double timeLaserCloudSurfLast = 0;
+double timeLaserCloudFullRes = 0;
 
 bool newLaserCloudCornerLast = false;
 bool newLaserCloudSurfLast = false;
@@ -99,8 +99,8 @@ std::vector< Eigen::Matrix4f > pose_map;
 //all points
 pcl::PointCloud<PointType>::Ptr laserCloudFullRes(new pcl::PointCloud<PointType>());
 pcl::PointCloud<PointType>::Ptr laserCloudFullRes2(new pcl::PointCloud<PointType>());
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr laserCloudFullResColor(new pcl::PointCloud<pcl::PointXYZRGB>());
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr laserCloudFullResColor_pcd(new pcl::PointCloud<pcl::PointXYZRGB>());
+// pcl::PointCloud<pcl::PointXYZRGB>::Ptr laserCloudFullResColor(new pcl::PointCloud<pcl::PointXYZRGB>());
+// pcl::PointCloud<pcl::PointXYZRGB>::Ptr laserCloudFullResColor_pcd(new pcl::PointCloud<pcl::PointXYZRGB>());
 
 
 pcl::PointCloud<PointType>::Ptr laserCloudCornerArray[laserCloudNum];
@@ -372,7 +372,7 @@ void laserCloudFullResHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloud
     timeLaserCloudFullRes = laserCloudFullRes2->header.stamp.toSec();
 
     laserCloudFullRes->clear();
-    laserCloudFullResColor->clear();
+    // laserCloudFullResColor->clear();
     pcl::fromROSMsg(*laserCloudFullRes2, *laserCloudFullRes);
 
     newLaserCloudFullRes = true;
@@ -397,13 +397,13 @@ int main(int argc, char** argv)
     ros::Publisher pubLaserCloudSurround_corner = nh.advertise<sensor_msgs::PointCloud2>
             ("/laser_cloud_surround_corner", 100);
 
-    ros::Publisher pubLaserCloudFullRes = nh.advertise<sensor_msgs::PointCloud2>
-            ("/velodyne_cloud_registered", 100);
+    // ros::Publisher pubLaserCloudFullRes = nh.advertise<sensor_msgs::PointCloud2>
+    //         ("/velodyne_cloud_registered", 100);
 
     ros::Publisher pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 1);
     nav_msgs::Odometry odomAftMapped;
-    odomAftMapped.header.frame_id = "/camera_init";
-    odomAftMapped.child_frame_id = "/aft_mapped";
+    odomAftMapped.header.frame_id = "camera_init";
+    odomAftMapped.child_frame_id = "aft_mapped";
 
     std::string map_file_path;
     ros::param::get("~map_file_path",map_file_path);
@@ -1117,34 +1117,34 @@ int main(int argc, char** argv)
             sensor_msgs::PointCloud2 laserCloudSurround3;
             pcl::toROSMsg(*laserCloudSurround2, laserCloudSurround3);
             laserCloudSurround3.header.stamp = ros::Time().fromSec(timeLaserCloudCornerLast);
-            laserCloudSurround3.header.frame_id = "/camera_init";
+            laserCloudSurround3.header.frame_id = "camera_init";
             pubLaserCloudSurround.publish(laserCloudSurround3);
 
             sensor_msgs::PointCloud2 laserCloudSurround3_corner;
             pcl::toROSMsg(*laserCloudSurround2_corner, laserCloudSurround3_corner);
             laserCloudSurround3_corner.header.stamp = ros::Time().fromSec(timeLaserCloudCornerLast);
-            laserCloudSurround3_corner.header.frame_id = "/camera_init";
+            laserCloudSurround3_corner.header.frame_id = "camera_init";
             pubLaserCloudSurround_corner.publish(laserCloudSurround3_corner);
             
 
             laserCloudFullRes2->clear();
             *laserCloudFullRes2 = *laserCloudFullRes;
 
-            int laserCloudFullResNum = laserCloudFullRes2->points.size();
-            for (int i = 0; i < laserCloudFullResNum; i++) {
+            // int laserCloudFullResNum = laserCloudFullRes2->points.size();
+            // for (int i = 0; i < laserCloudFullResNum; i++) {
 
-                pcl::PointXYZRGB temp_point;
-                RGBpointAssociateToMap(&laserCloudFullRes2->points[i], &temp_point);
-                laserCloudFullResColor->push_back(temp_point);
-            }
+            //     pcl::PointXYZRGB temp_point;
+            //     RGBpointAssociateToMap(&laserCloudFullRes2->points[i], &temp_point);
+            //     laserCloudFullResColor->push_back(temp_point);
+            // }
 
-            sensor_msgs::PointCloud2 laserCloudFullRes3;
-            pcl::toROSMsg(*laserCloudFullResColor, laserCloudFullRes3);
-            laserCloudFullRes3.header.stamp = ros::Time().fromSec(timeLaserCloudCornerLast);
-            laserCloudFullRes3.header.frame_id = "/camera_init";
-            pubLaserCloudFullRes.publish(laserCloudFullRes3);
+            // sensor_msgs::PointCloud2 laserCloudFullRes3;
+            // pcl::toROSMsg(*laserCloudFullResColor, laserCloudFullRes3);
+            // laserCloudFullRes3.header.stamp = ros::Time().fromSec(timeLaserCloudCornerLast);
+            // laserCloudFullRes3.header.frame_id = "camera_init";
+            // pubLaserCloudFullRes.publish(laserCloudFullRes3);
 
-            *laserCloudFullResColor_pcd += *laserCloudFullResColor;
+            // *laserCloudFullResColor_pcd += *laserCloudFullResColor;
 
             geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
                     (transformAftMapped[2], - transformAftMapped[0], - transformAftMapped[1]);
@@ -1157,21 +1157,28 @@ int main(int argc, char** argv)
             odomAftMapped.pose.pose.position.x = transformAftMapped[3];
             odomAftMapped.pose.pose.position.y = transformAftMapped[4];
             odomAftMapped.pose.pose.position.z = transformAftMapped[5];
+            odomAftMapped.pose.covariance = {
+            0.1,    0.0,    0.0,    0.0,    0.0,    0.0,
+            0.0,    0.1,    0.0,    0.0,    0.0,    0.0,
+            0.0,    0.0,    0.1,    0.0,    0.0,    0.0,
+            0.0,    0.0,    0.0,    0.1,    0.0,    0.0,
+            0.0,    0.0,    0.0,    0.0,    0.1,    0.0,
+            0.0,    0.0,    0.0,    0.0,    0.0,    0.1};
 
             pubOdomAftMapped.publish(odomAftMapped);
 
-            static tf::TransformBroadcaster br;
-            tf::Transform                   transform;
-            tf::Quaternion                  q;
-            transform.setOrigin( tf::Vector3( odomAftMapped.pose.pose.position.x,
-                                                odomAftMapped.pose.pose.position.y,
-                                                odomAftMapped.pose.pose.position.z ) );
-            q.setW( odomAftMapped.pose.pose.orientation.w );
-            q.setX( odomAftMapped.pose.pose.orientation.x );
-            q.setY( odomAftMapped.pose.pose.orientation.y );
-            q.setZ( odomAftMapped.pose.pose.orientation.z );
-            transform.setRotation( q );
-            br.sendTransform( tf::StampedTransform( transform, odomAftMapped.header.stamp, "/camera_init", "/aft_mapped" ) );
+            // static tf::TransformBroadcaster br;
+            // tf::Transform                   transform;
+            // tf::Quaternion                  q;
+            // transform.setOrigin( tf::Vector3( odomAftMapped.pose.pose.position.x,
+            //                                     odomAftMapped.pose.pose.position.y,
+            //                                     odomAftMapped.pose.pose.position.z ) );
+            // q.setW( odomAftMapped.pose.pose.orientation.w );
+            // q.setX( odomAftMapped.pose.pose.orientation.x );
+            // q.setY( odomAftMapped.pose.pose.orientation.y );
+            // q.setZ( odomAftMapped.pose.pose.orientation.z );
+            // transform.setRotation( q );
+            // br.sendTransform( tf::StampedTransform( transform, odomAftMapped.header.stamp, "camera_init", "aft_mapped" ) );
 
             kfNum++;
 
@@ -1193,27 +1200,27 @@ int main(int argc, char** argv)
         rate.sleep();
     }
     //--------------------------save map---------------
-    std::string surf_filename(map_file_path + "/surf.pcd");
-    std::string corner_filename(map_file_path + "/corner.pcd");
-    std::string all_points_filename(map_file_path + "/all_points.pcd");
-    std::ofstream keyframe_file(map_file_path + "/key_frame.txt");
-    for(auto kf : keyframe_pose){
-        keyframe_file << kf[0] << " "<< kf[1] << " "<< kf[2] << " "<< kf[3] << " "
-                          << kf[4] << " "<< kf[5] << " "<< kf[6] << " "<< std::endl;
-    }
-    keyframe_file.close();
-    pcl::PointCloud<pcl::PointXYZI> surf_points, corner_points;
-    surf_points = *laserCloudSurfFromMap;
-    corner_points = *laserCloudCornerFromMap;
-      if (surf_points.size() > 0 && corner_points.size() > 0) {
-    pcl::PCDWriter pcd_writer;
-    std::cout << "saving...";
-    pcd_writer.writeBinary(surf_filename, surf_points);
-    pcd_writer.writeBinary(corner_filename, corner_points);
-    pcd_writer.writeBinary(all_points_filename, *laserCloudFullResColor_pcd);
-  } else {
-    std::cout << "no points saved";
-  }
+//     std::string surf_filename(map_file_path + "/surf.pcd");
+//     std::string corner_filename(map_file_path + "/corner.pcd");
+//     std::string all_points_filename(map_file_path + "/all_points.pcd");
+//     std::ofstream keyframe_file(map_file_path + "/key_frame.txt");
+//     for(auto kf : keyframe_pose){
+//         keyframe_file << kf[0] << " "<< kf[1] << " "<< kf[2] << " "<< kf[3] << " "
+//                           << kf[4] << " "<< kf[5] << " "<< kf[6] << " "<< std::endl;
+//     }
+//     keyframe_file.close();
+//     pcl::PointCloud<pcl::PointXYZI> surf_points, corner_points;
+//     surf_points = *laserCloudSurfFromMap;
+//     corner_points = *laserCloudCornerFromMap;
+//       if (surf_points.size() > 0 && corner_points.size() > 0) {
+//     pcl::PCDWriter pcd_writer;
+//     std::cout << "saving...";
+//     pcd_writer.writeBinary(surf_filename, surf_points);
+//     pcd_writer.writeBinary(corner_filename, corner_points);
+//     pcd_writer.writeBinary(all_points_filename, *laserCloudFullResColor_pcd);
+//   } else {
+//     std::cout << "no points saved";
+//   }
     //--------------------------
     //  loss_output.close();
 
