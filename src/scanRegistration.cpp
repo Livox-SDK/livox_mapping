@@ -499,9 +499,9 @@ void laserCloudHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg)
   }
 
 
-  std::cout<<"ALL point: "<<cloudSize<<" outliers: "<< debugnum1 << std::endl
-            <<" break points: "<< debugnum2<<" break feature: "<< debugnum3 << std::endl
-            <<" normal points: "<< debugnum4<<" surf-surf feature: " << debugnum5 << std::endl;
+  // std::cout<<"ALL point: "<<cloudSize<<" outliers: "<< debugnum1 << std::endl
+  //           <<" break points: "<< debugnum2<<" break feature: "<< debugnum3 << std::endl
+  //           <<" normal points: "<< debugnum4<<" surf-surf feature: " << debugnum5 << std::endl;
 
   sensor_msgs::PointCloud2 laserCloudOutMsg;
   pcl::toROSMsg(*laserCloud, laserCloudOutMsg);
