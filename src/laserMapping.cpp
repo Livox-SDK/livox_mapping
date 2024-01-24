@@ -400,10 +400,15 @@ int main(int argc, char** argv)
     ros::Publisher pubLaserCloudFullRes = nh.advertise<sensor_msgs::PointCloud2>
             ("/velodyne_cloud_registered", 100);
 
+    std::string frame_id;
+    std::string child_frame_id;
+    ros::param::param<std::string>("~frame_id",  frame_id, "camera_init");
+    ros::param::param<std::string>("~child_frame_id",  child_frame_id, "aft_mapped");
+
     ros::Publisher pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 1);
     nav_msgs::Odometry odomAftMapped;
-    odomAftMapped.header.frame_id = "/camera_init";
-    odomAftMapped.child_frame_id = "/aft_mapped";
+    odomAftMapped.header.frame_id = frame_id;
+    odomAftMapped.child_frame_id = child_frame_id;
 
     std::string map_file_path;
     ros::param::get("~map_file_path",map_file_path);
