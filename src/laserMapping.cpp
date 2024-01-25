@@ -381,26 +381,26 @@ void laserCloudFullResHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloud
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "laserMapping");
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~");
 
     ros::Subscriber subLaserCloudCornerLast = nh.subscribe<sensor_msgs::PointCloud2>
-            ("/laser_cloud_sharp", 100, laserCloudCornerLastHandler);
+            ("cloud_sharp", 100, laserCloudCornerLastHandler);
 
     ros::Subscriber subLaserCloudSurfLast = nh.subscribe<sensor_msgs::PointCloud2>
-            ("/laser_cloud_flat", 100, laserCloudSurfLastHandler);
+            ("cloud_flat", 100, laserCloudSurfLastHandler);
 
     ros::Subscriber subLaserCloudFullRes = nh.subscribe<sensor_msgs::PointCloud2>
-            ("/livox_cloud", 100, laserCloudFullResHandler);
+            ("cloud", 100, laserCloudFullResHandler);
 
     ros::Publisher pubLaserCloudSurround = nh.advertise<sensor_msgs::PointCloud2>
-            ("/laser_cloud_surround", 100);
+            ("cloud_surround", 100);
     ros::Publisher pubLaserCloudSurround_corner = nh.advertise<sensor_msgs::PointCloud2>
-            ("/laser_cloud_surround_corner", 100);
+            ("cloud_surround_corner", 100);
 
     ros::Publisher pubLaserCloudFullRes = nh.advertise<sensor_msgs::PointCloud2>
             ("/velodyne_cloud_registered", 100);
 
-    ros::Publisher pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 1);
+    ros::Publisher pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("odometry", 1);
     nav_msgs::Odometry odomAftMapped;
     odomAftMapped.header.frame_id = "/camera_init";
     odomAftMapped.child_frame_id = "/aft_mapped";

@@ -1,14 +1,24 @@
 <launch>
-
   <arg name="rviz" default="true" />
+  <arg name="cloud" default="/livox/lidar"/>
 
   <node pkg="livox_mapping" type="loam_scanRegistration" name="scanRegistration" output="screen">
+    <remap from="~input" to="$(arg cloud)"/>
+    <remap from="~cloud" to="/livox_cloud"/>
+    <remap from="~cloud_sharp" to="/laser_cloud_sharp"/>
+    <remap from="~cloud_flat" to="/laser_cloud_flat"/>
   </node>
 
   <node pkg="livox_mapping" type="loam_laserMapping" name="laserMapping" output="screen">
-  <param name="map_file_path" type="string" value=" " />
-  <param name="filter_parameter_corner" type="double" value="0.1" />
-  <param name="filter_parameter_surf" type="double" value="0.2" />
+    <remap from="~cloud" to="/livox_cloud"/>
+    <remap from="~cloud_sharp" to="/laser_cloud_sharp"/>
+    <remap from="~cloud_flat" to="/laser_cloud_flat"/>
+    <remap from="~cloud_surround" to="/laser_surround"/>
+    <remap from="~cloud_surround_corner" to="/laser_surround_corner"/>
+    <remap from="~odometry" to="/aft_mapped_to_init"/>
+    <param name="map_file_path" type="string" value=" " />
+    <param name="filter_parameter_corner" type="double" value="0.1" />
+    <param name="filter_parameter_surf" type="double" value="0.2" />
   </node>
 
   <group if="$(arg rviz)">
