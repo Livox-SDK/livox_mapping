@@ -165,10 +165,10 @@ void transformAssociateToMap()
     transformTobeMapped[4] = t_predict[1];
     transformTobeMapped[5] = t_predict[2];
 
-    std::cout<<"DEBUG transformAftMapped : "<<transformAftMapped[0]<<" "<<transformAftMapped[1]<<" "<<transformAftMapped[2]<<" "
-    <<transformAftMapped[3]<<" "<<transformAftMapped[4]<<" "<<transformAftMapped[5]<<std::endl;
-    std::cout<<"DEBUG transformTobeMapped : "<<transformTobeMapped[0]<<" "<<transformTobeMapped[1]<<" "<<transformTobeMapped[2]<<" "
-    <<transformTobeMapped[3]<<" "<<transformTobeMapped[4]<<" "<<transformTobeMapped[5]<<std::endl;
+    // std::cout<<"DEBUG transformAftMapped : "<<transformAftMapped[0]<<" "<<transformAftMapped[1]<<" "<<transformAftMapped[2]<<" "
+    // <<transformAftMapped[3]<<" "<<transformAftMapped[4]<<" "<<transformAftMapped[5]<<std::endl;
+    // std::cout<<"DEBUG transformTobeMapped : "<<transformTobeMapped[0]<<" "<<transformTobeMapped[1]<<" "<<transformTobeMapped[2]<<" "
+    // <<transformTobeMapped[3]<<" "<<transformTobeMapped[4]<<" "<<transformTobeMapped[5]<<std::endl;
 }
 
 void transformUpdate()
@@ -463,7 +463,7 @@ int main(int argc, char** argv)
             newLaserCloudFullRes = false;
 
             //transformAssociateToMap();
-            std::cout<<"DEBUG mapping start "<<std::endl;
+            // std::cout<<"DEBUG mapping start "<<std::endl;
 
             PointType pointOnYAxis;
             pointOnYAxis.x = 0.0;
@@ -730,12 +730,12 @@ int main(int argc, char** argv)
             downSizeFilterSurf.filter(*laserCloudSurfLast_down);
             int laserCloudSurfLast_downNum = laserCloudSurfLast_down->points.size();
 
-            std::cout<<"DEBUG MAPPING laserCloudCornerLast_down : "<<laserCloudCornerLast_down->points.size()<<" laserCloudSurfLast_down : "
-            <<laserCloudSurfLast_down->points.size()<<std::endl;
-            std::cout<<"DEBUG MAPPING laserCloudCornerLast : "<<laserCloudCornerLast->points.size()<<" laserCloudSurfLast : "
-            <<laserCloudSurfLast->points.size()<<std::endl;
-            std::cout<<"DEBUG MAPPING laserCloudCornerFromMapNum : "<<laserCloudCornerFromMapNum<<" laserCloudSurfFromMapNum : "
-            <<laserCloudSurfFromMapNum<<std::endl;
+            // std::cout<<"DEBUG MAPPING laserCloudCornerLast_down : "<<laserCloudCornerLast_down->points.size()<<" laserCloudSurfLast_down : "
+            // <<laserCloudSurfLast_down->points.size()<<std::endl;
+            // std::cout<<"DEBUG MAPPING laserCloudCornerLast : "<<laserCloudCornerLast->points.size()<<" laserCloudSurfLast : "
+            // <<laserCloudSurfLast->points.size()<<std::endl;
+            // std::cout<<"DEBUG MAPPING laserCloudCornerFromMapNum : "<<laserCloudCornerFromMapNum<<" laserCloudSurfFromMapNum : "
+            // <<laserCloudSurfFromMapNum<<std::endl;
 
             t2 = clock();
             if (laserCloudCornerFromMapNum > 10 && laserCloudSurfFromMapNum > 100) {
@@ -1032,7 +1032,7 @@ int main(int argc, char** argv)
                         break;
                     }
                 }
-                std::cout<<"DEBUG num_temp: "<<num_temp << std::endl;
+                // std::cout<<"DEBUG num_temp: "<<num_temp << std::endl;
 
                 transformUpdate();
             }
@@ -1184,7 +1184,7 @@ int main(int argc, char** argv)
 
             t4 = clock();
 
-            std::cout<<"mapping time : "<<t2-t1<<" "<<t3-t2<<" "<<t4-t3<<std::endl;
+            // std::cout<<"mapping time : "<<t2-t1<<" "<<t3-t2<<" "<<t4-t3<<std::endl;
 
             
         }
